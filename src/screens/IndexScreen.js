@@ -5,8 +5,20 @@ import {FlatList} from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const IndexScreen = ({navigation}) => {
-  const {state, deleteBlogPost} = useContext(BlogContext);
-  console.log('Index screen', state);
+  const {state, deleteBlogPost, getBlogPosts} = useContext(BlogContext);
+  console.log(state);
+  useEffect(() => {
+    getBlogPosts();
+
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
+
   return (
     <View>
       <FlatList
